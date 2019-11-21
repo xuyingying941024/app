@@ -38,5 +38,4 @@
     在新注册的router中添加LinkActiveClass: "active"
 9、设置导航下边的线
 10、头部请求.json数据
-sdgfghgki 
 

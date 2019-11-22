@@ -1,6 +1,6 @@
 <template>
   <div class="ratings">
-    ratings
+    ratingsdfguytreetyuuyeertry
   </div>
 </template>
 

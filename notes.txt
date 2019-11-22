@@ -1,41 +1,43 @@
-1、将svg格式图片在"https://icomoon.io/#/select"中转化为icon图标
-2、将字体图标添加到项目中
-    在src下新建公共部分common文件夹 新建css和fonts文件夹
-    css文件夹中放入icon.css文件 fonts中放入。。。
-3、新建data文件夹 放入数据.json文件
-    .json文件中的数据正常情况下由后台提供
-    前后端分离 因此不局限于后台数据 完成后可将接口进行转换
-4、利用node.js将请求数据.json生成对应的接口
-    bulid>webpack.dev.conf.js中已经拥有webpack
-    使用node.js引入express框架来生成对用的接口
-        // 导入express
-        const express = require("express")
+第一讲：
+    1、将svg格式图片在"https://icomoon.io/#/select"中转化为icon图标
+    2、将字体图标添加到项目中
+        在src下新建公共部分common文件夹 新建css和fonts文件夹
+        css文件夹中放入icon.css文件 fonts中放入。。。
+    3、新建data文件夹 放入数据.json文件
+        .json文件中的数据正常情况下由后台提供
+        前后端分离 因此不局限于后台数据 完成后可将接口进行转换
+    4、利用node.js将请求数据.json生成对应的接口
+        bulid>webpack.dev.conf.js中已经拥有webpack
+        使用node.js引入express框架来生成对用的接口
+            // 导入express
+            const express = require("express")
 
-        // 创建express实例
-        const app = express()
+            // 创建express实例
+            const app = express()
 
-        // 引入json数据
-        var goods = require("../data/goods.json")
-        var ratings = require("../data/ratings.json")
-        var seller = require("../data/seller.json")
-    在本地服务器中调用before方法，然后生成数据接口
-    遇到的问题：
-        cli3.0搭建的项目没有webpack.dev.conf.js文件
-        在项目根目录创建vue.config.js文件进行配置
-        在项目根目录创建mock.js文件，作为express的运行脚本
-        具体参考“https://blog.csdn.net/weixin_37757346/article/details/94201681”
-5、添加reset.css重置样式
-    https://meyerweb.com/ > Toolbox > css > Reset CSS
-    在index.html中引入reset.css
-    问题：cli3.0搭建的项目在index.html中引入reset不起作用
-        最后在main.js中引用的
-6、新建文件
-    头部
-    导航
-7、在APP.vue中引入header.vue
-    在nav.vue中添加 点餐、评价、商家路由
-8、为导航添加点击样式
-    在新注册的router中添加LinkActiveClass: "active"
-9、设置导航下边的线
-10、头部请求.json数据
-11
+            // 引入json数据
+            var goods = require("../data/goods.json")
+            var ratings = require("../data/ratings.json")
+            var seller = require("../data/seller.json")
+        在本地服务器中调用before方法，然后生成数据接口
+        遇到的问题：
+            cli3.0搭建的项目没有webpack.dev.conf.js文件
+            在项目根目录创建vue.config.js文件进行配置
+            在项目根目录创建mock.js文件，作为express的运行脚本
+            具体参考“https://blog.csdn.net/weixin_37757346/article/details/94201681”
+    5、添加reset.css重置样式
+        https://meyerweb.com/ > Toolbox > css > Reset CSS
+        在index.html中引入reset.css
+        问题：cli3.0搭建的项目在index.html中引入reset不起作用
+            最后在main.js中引用的
+    6、新建文件
+        头部
+        导航
+    7、在APP.vue中引入header.vue
+        在nav.vue中添加 点餐、评价、商家路由
+    8、为导航添加点击样式
+        在新注册的router中添加LinkActiveClass: "active"
+    9、设置导航下边的线
+    10、头部请求.json数据
+第二讲：
+    1、布局 在css中引入icon.css文件

@@ -15,7 +15,6 @@
 <script>
 import header from "./views/header/Header"
 import nav from "./views/nav/Nav"
-// import header from "./views/header/Header"
 export default {
   name: "app",
   components:{
@@ -34,7 +33,7 @@ export default {
       return res.json()
     })
     .then(response => {
-      console.log(response)
+      // console.log(response)
       if(response.data.code == 0){
         this.poiInfo = response.data.data.poi_info
       }

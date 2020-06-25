@@ -1,15 +1,15 @@
 <template>
   <div class="nav">
     <router-link to="/goods" class="nav-item">
-      点餐
+      点菜
       <i class="line"></i>
     </router-link>
     <router-link to="/ratings" class="nav-item">
-      评价
+      评价（{{commentNum}}）
       <i class="line"></i>
     </router-link>
     <router-link to="/seller" class="nav-item">
-      商品
+      商家
       <i class="line"></i>
     </router-link>
   </div>
@@ -17,7 +17,13 @@
 
 <script>
 export default {
-  name: "appnav"
+  name: "appnav",
+  props:{
+    commentNum:{
+      type:Number,
+      default:0
+    }
+  }
   // components:{
   //   goods,
   //   ratings,

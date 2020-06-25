@@ -1,4 +1,4 @@
-第一讲：
+第一讲：mock数据及配置路由
     1、将svg格式图片在"https://icomoon.io/#/select"中转化为icon图标
     2、将字体图标添加到项目中
         在src下新建公共部分common文件夹 新建css和fonts文件夹
@@ -55,4 +55,285 @@
     1、布局 在css中引入icon.css文件
     2、添加search图片
 第三讲：
+    单词拼错导致问题 将data写成date
+    v-for中item和index中间要加逗号
+    热销循环的数据是goods数组在goods.json中取到的数据
     为内容添加滚动：better-scroll
+    ref 拿到当前元素
+    1、ref 加在普通的元素上，用this.$refs.（ref值） 获取到的是dom元素
+　　2、ref 加在子组件上，用this.$refs.（ref值） 获取到的是组件实例，可以使用组件的所有方法。在使用方法的时候直接this.$refs.（ref值）.方法（） 就可以使用了。
+第四讲：购物车（核心功能）
+    在goods组件中新建poiInfo属性，获取到goods.json中的poi_info数据
+    属性传值：将goods组件中拿到的值传给shoppingCart组件
+    props要写在default最外层，不能写在return中
+    加减号新建组件 cartcontrol
+    为加号减号添加点击事件
+    加号decreaseCart 减号 increaseCart
+    将food属性进行传参 实现food加加减减
+    为数据统一添加count属性
+    在当前组件引入vue
+    利用vue提供的said
+    判断当前的count是否存在
+    不存在的情况下
+    使用Vue.set方法为其添加各个属性
+    第一个值是要将值加入到哪个对象里面，第二个值是为对象中添加的key，第三个是添加的值为多少
+    存在的情况下就让其++
+
+    为foodScroll添加点击事件
+    click:true
+
+    数量小于零时减号消失 为其添加v-show指令 在food.count存在的情况下显示
+
+    为减号添加动画 利用transition
+
+    将商品添加到购物车
+    在goods组件中用computed计算属性监听goods是否发生变化
+    在计算属性中写个方法再将此方法传递到购物车组件
+    selectFoods
+    定义一个空数组 foods
+    利用forEach遍历goods 参数用myfoods
+    再继续利用forEach遍历spus
+    判断food.count是否大于0
+        true将添加的商品push放进foods中
+    返回foods
+
+    利用属性传值的形式将selectFoods传递到购物车组件
+    在shopCart中prop接收数据
+    type:Array
+    default为一个方法
+    default(){
+        若有内容将会放进数组中
+        return[]
+    }
+
+    计算属性里面添加
+        个数和总价格
+
+        个数 totalCount
+        let num = 0
+        利用forEach循环selectFoods 传递参数为food
+        num += food.count
+        返回num
+
+        总价 totalPrice
+        let total = 0
+        利用forEach循环selectFoods 传递参数为food
+        total += food.min_price * food.count
+        返回total
+
+        HTML中添加标签 展示数量和总价
+        在数量和总价有值的时候才显示
+
+        绑定属性样式 highlign 有值的时候才显示
+
+        计算属性中
+        设置去结算功能
+        payStr
+        判断totalCount是否大于0
+        true 返回字符串去结算
+        false 返回HTML中代码
+
+        在goods组件中添加商品个数
+        添加方法calculateCount(item.spus)
+        每个类别的数量在各自的区域中
+        calculateCount(spus)
+        let count = 0
+        利用forEach遍历spus
+        判断food.count是否大于0
+        true count += food.count
+        返回count
+            碰到的问题 在遍历的时候直接遍历了goods出错
+                因为在调用中calculateCount(item.spus)已经将spus值传了进来，所以直接遍历spus就可以
+第五讲：购物车列表（核心功能）
+    在shopCart中添加购物车列表
+    布局
+        .shopcart-list 
+            .list-top 
+                {{poiInfo.discounts2[0].info}} v-if判断该属性是否存在 决定显示与否
+            .list-header 
+                h3.title 1号口袋
+                .empty
+                    img/ash_bin.png
+                    span清空购物车
+            .list-content 
+                ul
+                    li.food-item  遍历selectFoods
+                        .desc-wrapper
+                            .desc-left 
+                                p.name 拿到名字
+                                p.unit 拿到unit
+                                p.description 拿到description
+                                    unit和description只能显示一个，用v-show取相对的反
+                            .desc-right
+                                ￥价格 min_price
+                        .cartcontrol-wrapper
+            .list-bottom
+    使用cart-control 引入
+    在购物车logo处添加toggleList点击事件，在方法中事件，利用开关的形式
+        数据中添加fold:true
+        判断购物车个数是否为空
+            true return
+            false 为fold取反
+    为列表添加listShow方法在计算属性中，v-show存在的时候显示
+    判断totalCount是否存在
+        true this.fold = true   数据不展示
+             return false
+        false let show = !this.fold
+              return show
+    添加样式show 在listShow为真的时候
+
+    添加滚动 better-scroll
+        在list-content中添加ref="listContent" 要在实例化中引用
+        在listshow中实例化bscroll
+        判断show存在的情况下,在显示购物车列表的时候才为其添加滚动
+            this.$nextTick(() => {
+                判断this.shopScroll不存在时，实例化一个BScroll
+                    this.shopScroll = new BScroll(this.$refs.listContent,{
+                        click:true  添加事件派发，为加减号添加点击事件
+                    })
+                否则 this.shopScroll.refresh()
+            })
+    为清空购物车（empty）添加点击事件clearAll
+        forEach遍历selectFoods，传值food
+            food.count = 0
+    
+    添加蒙版，点击蒙版实现列表收缩或展示
+    在整个结构外层加.shopcart  
+        蒙版.shopcart-mask v-show="listShow" @click = "hideMask"
+        在方法中实现hideMask方法
+            this.fold = true
+        为shopcart添加样式highlight，在totalCount>0时展示
+第六讲：商品详情页面（核心功能）
+    在（具体的商品列表）下添加点击事件  showDetail()    将food对象传值
+    在方法中实现showDetail(food)
+        要将方法里面的food值赋给一个属性，然后将这个属性传递给详情的组件
+            this.selectFood = food  (selectFood暂时不存在)
+                在data中定义selectFood，默认值为一个空的对象
+
+    购物车下添加商品详情组件（app-product-detail） (productDetail)
+    搭建基本结构 
+    添加动画    transition name="food-detail"
+                    div class = "food" v-show = "showFlag"
+                        div class = "food-wrapper"
+                            div class = "food-content"
+                                div class = "img-wrapper"
+                                    img class = "food-img" :src="food.picture"
+                                    span class="close-bt icon-close"
+                                    img class="share-bt" src="./share.png"
+                                    img class="more-bt" src="./more.png"
+                                商品名字价格
+                                div class="content-wrapper"
+                                    h3 class="name" {{food.name}}
+                                    p class="saled" 月售 {{food.month_saled_content}}
+                                    img class="product" v-show="food.product_label_picture" :src="food.product_label_picture"
+                                    p class="price"
+                                        span class="text" ￥{{food.min_price}}   (钱)
+                                        span class="unit" /{{food.unit}}  (单位)
+                                    
+                                    div class="cartcontrol-wrapper"
+                                        添加加减号组件
+
+                                    div class="buy" v-show="!food.count || food.count == 0" 选规格
+    在goods.vue中引入productDetail      在组件中进行注册
+    在详情页添加showFlag方法    商品详情页刚开始不展示，在data中定义，默认为false
+    food  传值
+    在productDetal组件中props将food进行传值 类型为object
+    添加方法 showView
+        this.showFlag = true
+    
+    商品详情组件上添加 ref="foodView"
+        showDetail方法中添加 this.$refs.foodView.showView()
+    
+    触发了冒泡事件，进行阻止
+    在加减号组件中为点击事件添加  @click.stop.pervent
+    在详情组件中引入CartControl,并在component中注册组件
+
+    为×添加点击事件，以改变详情组件的状态
+    @click="closeView"
+    添加方法closeView   this.showFlag = false
+    添加样式
+
+    判断选规格是否显示，利用v-show来实现
+    引入vue，设置count属性
+        v-show="!food.count || food.count == 0"
+    为选规格添加addproduce事件，来实现与加减号组件的切换
+        在该组件引入vue，为其添加count属性
+        Vue.set(this.food,"count",1)
+第七讲：商品详情页面（评价列表）
+    引入BScroll，实现列表滚动
+        div class="split"
+    在showView方法中实现BScroll
+        this.$nextTick(()=>{
+            if(!this.scroll){
+                this.scroll = new BScroll(this.$refs.foodView,{
+                    click:true
+                })
+            }else{
+                this.scroll.refresh()
+            }
+        })
+        在最外层设置ref="foodView"
+    
+    添加分割线组件 split    引入，注册
+    foot-content同级添加分割线组件
+    
+    分割线下面添加外卖评价
+    div class="rating-wrapper"
+        评价头部
+        div class="rating-title"
+            div class="like-ratio" v-if="food.rating"
+                span class="title" {{food.rating.title}}
+                span class="retio" ({{food.rating.like_tatio_desc}} i {{food.like_ratio}})
+            div class="snd-title" v-if="food.rating"
+                span class="text" {{food.rating.snd_title}}
+                span class="icon icon-keyboard_arrow_right"
+            ul class="rating-content" v-if="food.rating"
+                li v-for="(comment,index) in food.rating.comment_list" :key="index" class="comment-item"
+                    div class="comment-header"
+                        两者显示一个，第二个为默认替代图标
+                        img :src="comment.user_icon" v-if="comment.user_icon"
+                        img src="./img/anonymity.png" v-if="!comment.user_icon"
+                    div class="comment-main"
+                        div class="user" {{comment.user_name}}
+                        div class="time" {{comment.comment_time}}
+                        div class="content" {{comment.comment_content}}
+    根目录文件更改后必须重启服务才能生效
+第八讲：评价页面   
+    评价后面添加总评价个数     rating.json中comment_num    当前数据为进入项目时就能够获取到，所以在App.vue中设置   
+    rating.json中设置
+        fetch("/api/ratings")
+            // 转换数据
+            .then(res => {
+            return res.json()
+            })
+            .then(response => {
+            // console.log(response)
+            if(response.data.code == 0){
+                this.commentNum = response.data.data.comment_num
+            }
+        })
+    在data中定义，利用属性传值将commentNum传给<app-nav :commentNum="commentNum"></app-nav>
+    在nav.vue中接收
+        props:{
+            commentNum:{
+                type:Number,
+                defaule:0
+            }
+        }
+        在评价后面添加commentNum数量
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

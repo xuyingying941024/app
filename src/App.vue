@@ -7,9 +7,9 @@
     <!-- 头部信息 -->
     <app-header :poiInfoChild = "poiInfo"></app-header>
     <!-- 导航部分 -->
-    <app-nav/>
+    <app-nav :commentNum="commentNum"></app-nav>
     <!-- 内容 -->
-    <router-view/>
+    <keep-alive><router-view/></keep-alive>
   </div>
 </template>
 <script>
@@ -23,7 +23,8 @@ export default {
   },
   data(){
     return{
-      poiInfo:{}
+      poiInfo:{},
+      commentNum:0
     }
   },
   created(){
@@ -36,6 +37,17 @@ export default {
       // console.log(response)
       if(response.data.code == 0){
         this.poiInfo = response.data.data.poi_info
+      }
+    }),
+    fetch("/api/ratings")
+    // 转换数据
+    .then(res => {
+      return res.json()
+    })
+    .then(response => {
+      // console.log(response)
+      if(response.data.code == 0){
+        this.commentNum = response.data.data.comment_num
       }
     })
   }

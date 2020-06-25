@@ -18,7 +18,7 @@ import nav from "./views/nav/Nav"
 export default {
   name: "app",
   components:{
-    "app-header": header,
+    "app-header": header, 
     "app-nav": nav
   },
   data(){
